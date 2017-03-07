@@ -24,6 +24,8 @@ $ echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bash_profile
 $ echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
 ```
 
+* Bila tidak bisa, ganti `.bash_profile` dengan `.bashrc`
+
 Reload shell, lalu jalankan perintah instalasi Python 2.6.6.
 
 ```sh
@@ -49,19 +51,25 @@ $ virtualenv venv01
 $ source venv01/bin/activate
 ```
 
-Pasang django dan pygments.
+Fork & Clone Project ini kedalam direktori `tempel`
 
 ```sh
-$ pip install -r requirements.txt
+$ git clone https://github.com/usernameFork/tempel-boi.git tempel
 ```
 
-Unduh revisi terakhir dari dev.blankonlinux.or.id atau repo github ini.
+Atau Unduh revisi terakhir dari dev.blankonlinux.or.id
 
 ```sh
 $ bzr branch http://dev.blankonlinux.or.id/browser/infrastruktur/tempel
 ```
 
-Coba jalankan.
+Pasang django dan pustaka yang dibutuhkan
+
+```sh
+$ pip install -r requirements.txt
+```
+
+Coba jalankan dalam virtualenv shell
 
 ```sh
 $ cd tempel
