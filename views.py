@@ -45,21 +45,27 @@ def index(request):
         if form.is_valid():
             private = form.cleaned_data['private']
 
-            entry = Entry()
-            entry.ip = request.META['REMOTE_ADDR']
-            entry.content = form.cleaned_data['content']
-            entry.language = form.cleaned_data['language']
-            if private:
-                entry.private_token = utils.create_token()
-            entry.save()
+            if utils.check_badword(form.cleaned_data['content']) is True:
+                # Untuk sementara, bila ada badword maka akan redirect ke index
+                response = HttpResponse(status=302)
+                response['Location'] = "/"
+            else:
+                entry = Entry()
+                entry.ip = request.META['REMOTE_ADDR']
+                entry.content = form.cleaned_data['content']
+                entry.language = form.cleaned_data['language']
+                if private:
+                    entry.private_token = utils.create_token()
 
-            age = 60 * settings.TEMPEL_EDIT_AGE
-            path = entry.view_url()
+                entry.save()
 
-            response = HttpResponse(status=302)
-            response['Location'] = path
-            response.set_cookie('token', entry.edit_token,
-                                max_age=age, path=path)
+                age = 60 * settings.TEMPEL_EDIT_AGE
+                path = entry.view_url()
+
+                response = HttpResponse(status=302)
+                response['Location'] = path
+                response.set_cookie('token', entry.edit_token,
+                                    max_age=age, path=path)
 
             return response
 
@@ -155,4 +161,3 @@ def download(request, id):
 
 def private_download(request, id, private_token):
     return _download(request, id, private_token)
-
