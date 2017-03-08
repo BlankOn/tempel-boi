@@ -1,4 +1,4 @@
-import uuid
+import uuid, string
 from datetime import datetime
 
 from django.conf import settings
@@ -21,3 +21,14 @@ def get_extension(name):
 def create_token():
     return str(uuid.uuid4()).split('-')[0]
 
+def check_badword(text):
+    # Badword filter
+    badwords = sorted(set(
+        word.strip(string.punctuation)
+        for line in open('badwords.txt','r')
+        for word in line.split()))
+
+    if any(word in text for word in badwords):
+        return True
+    else:
+        return False
